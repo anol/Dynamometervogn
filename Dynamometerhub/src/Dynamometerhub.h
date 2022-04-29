@@ -1,0 +1,14 @@
+//
+// Created by aeols on 29.04.2022.
+//
+
+#ifndef DYNAMOMETERVOGN_DYNAMOMETERHUB_H
+#define DYNAMOMETERVOGN_DYNAMOMETERHUB_H
+
+
+class Dynamometerhub {
+
+};
+
+
+#endif //DYNAMOMETERVOGN_DYNAMOMETERHUB_H
