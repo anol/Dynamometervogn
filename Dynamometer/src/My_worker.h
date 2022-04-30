@@ -8,10 +8,13 @@
 #include <gtkmm.h>
 #include <thread>
 #include <mutex>
+#include <stdint-gcc.h>
 
-class My_window;
+class Dynamometer;
 
 class My_worker {
+    int the_index;
+    const char *the_name;
     enum {
         Number_of_values = 4,
         Buffer_size = 16
@@ -20,12 +23,14 @@ class My_worker {
     int the_pos{};
     bool the_flag[Number_of_values]{};
     double the_data[Number_of_values]{};
-    My_window *optional_caller{};
+    void *optional_user{};
+
+    void (*optional_func)(void *user, int data){};
 
 public:
-    My_worker();
+    My_worker(int index, const char *name);
 
-    void do_work(const char* port_name);
+    void run();
 
     bool has_data(uint32_t index) const;
 
@@ -35,7 +40,7 @@ public:
 
     bool has_stopped() const;
 
-    void initalize(My_window *);
+    void initalize(void *user, void (*func)(void *user, int data));
 
 private:
     // Synchronizes access to member data.

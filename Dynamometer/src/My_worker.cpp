@@ -5,14 +5,16 @@
 #include <termios.h>
 #include <cstdio>
 
-My_worker::My_worker() :
+My_worker::My_worker(int index, const char *name) :
+        the_index(index),
+        the_name(name),
         m_Mutex(),
         m_shall_stop(false),
-        m_has_stopped(false) {
-}
+        m_has_stopped(false) {}
 
-void My_worker::initalize(My_window *window) {
-    optional_caller = window;
+void My_worker::initalize(void *user, void (*func)(void *user, int data)) {
+    optional_user = user;
+    optional_func = func;
 }
 
 bool My_worker::has_data(uint32_t index) const {
@@ -20,12 +22,12 @@ bool My_worker::has_data(uint32_t index) const {
 }
 
 double My_worker::get_data(uint32_t index) {
-    std::lock_guard <std::mutex> lock(m_Mutex);
+    std::lock_guard<std::mutex> lock(m_Mutex);
     return (index < Number_of_values) ? the_data[index] : 0.0;
 }
 
 void My_worker::update_data(uint32_t index) {
-    std::lock_guard <std::mutex> lock(m_Mutex);
+    std::lock_guard<std::mutex> lock(m_Mutex);
     the_buffer[the_pos] = 0;
     try {
         switch (index) {
@@ -48,30 +50,30 @@ void My_worker::update_data(uint32_t index) {
     catch (...) {
     }
     the_pos = 0;
-    if (optional_caller) {
-        optional_caller->notify();
+    if (optional_func) {
+        optional_func(optional_user, the_index);
     }
 }
 
 void My_worker::stop_work() {
-    std::lock_guard <std::mutex> lock(m_Mutex);
+    std::lock_guard<std::mutex> lock(m_Mutex);
     m_shall_stop = true;
 }
 
 bool My_worker::has_stopped() const {
-    std::lock_guard <std::mutex> lock(m_Mutex);
+    std::lock_guard<std::mutex> lock(m_Mutex);
     return m_has_stopped;
 }
 
-void My_worker::do_work(const char *port_name) {
+void My_worker::run() {
     {
-        std::lock_guard <std::mutex> lock(m_Mutex);
+        std::lock_guard<std::mutex> lock(m_Mutex);
         m_has_stopped = false;
     }
-    std::cout << "\r\n Hi there " << port_name << std::endl;
-    auto fd = open(port_name, O_RDWR | O_NOCTTY);
+    std::cout << "\r\n Hi there " << the_name << std::endl;
+    auto fd = open(the_name, O_RDWR | O_NOCTTY);
     if (fd == -1) {
-        perror(port_name);
+        perror(the_name);
         return;
     }
     struct termios options{};
@@ -125,9 +127,11 @@ void My_worker::do_work(const char *port_name) {
         }
     }
     {
-        std::lock_guard <std::mutex> lock(m_Mutex);
+        std::lock_guard<std::mutex> lock(m_Mutex);
         m_shall_stop = false;
         m_has_stopped = true;
     }
-    if (optional_caller) optional_caller->notify();
+    if (optional_func) {
+        optional_func(optional_user, the_index);
+    }
 }
