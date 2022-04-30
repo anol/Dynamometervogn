@@ -19,28 +19,28 @@ class My_worker {
         Number_of_values = 4,
         Buffer_size = 16
     };
+    char the_key{};
     char the_buffer[Buffer_size]{};
     int the_pos{};
-    bool the_flag[Number_of_values]{};
-    double the_data[Number_of_values]{};
     void *optional_user{};
 
-    void (*optional_func)(void *user, int data){};
+    void (*optional_func)(void *user, char key, double data){};
 
 public:
     My_worker(int index, const char *name);
 
     void run();
 
-    bool has_data(uint32_t index) const;
-
-    double get_data(uint32_t index);
-
     void stop_work();
 
     bool has_stopped() const;
 
-    void initalize(void *user, void (*func)(void *user, int data));
+    void initalize(void *user, void (*func)(void *user, char key, double data));
+
+private:
+    void update_data();
+
+    void read_data(int fd);
 
 private:
     // Synchronizes access to member data.
@@ -49,8 +49,6 @@ private:
     // Data used by both GUI thread and worker thread.
     bool m_shall_stop;
     bool m_has_stopped;
-
-    void update_data(uint32_t index);
 };
 
 

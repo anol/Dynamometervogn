@@ -15,7 +15,7 @@ class Dynamometer {
         Number_of_workers = 4
     };
 
-    My_window the_window{};
+    My_window *optional_window{};
     My_worker m_Worker[Number_of_workers] = {
             {0, "/dev/ttyUSB0"},
             {1, "/dev/ttyUSB1"},
@@ -27,7 +27,7 @@ class Dynamometer {
 public:
     int main(int argc, char *argv[]);
 
-    void notify(int index);
+    void notify(char key, double data);
 
 private:
     My_worker *get_worker(uint32_t index) { return (index < Number_of_workers) ? &m_Worker[index] : nullptr; };

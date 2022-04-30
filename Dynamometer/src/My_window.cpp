@@ -16,10 +16,7 @@ My_window::My_window() :
 My_window::~My_window() {
 }
 
-static My_window *optional_instance{};
-
 void My_window::initialize() {
-    optional_instance = this;
     move(0, 0);
     add(the_box);
     for (uint32_t index = 0; index < Number_of_values; index++) {
@@ -46,35 +43,34 @@ void My_window::on_button_clicked() {
     std::cout << "Hello World" << std::endl;
 }
 
-void My_window::notify() {
-    m_Dispatcher.emit();
-}
-
 void My_window::on_notification_from_worker_thread() {
-//    for (uint32_t gpc = 0; gpc < Number_of_workers; gpc++) {
-//        if (m_WorkerThread[gpc] && m_Worker[gpc].has_stopped()) {
-//            if (m_WorkerThread[gpc]->joinable())
-//                m_WorkerThread[gpc]->join();
-//            delete m_WorkerThread[gpc];
-//            m_WorkerThread[gpc] = nullptr;
-//        }
-//    }
     update_widgets();
 }
 
 void My_window::update_widgets() {
-//    for (uint32_t gpc = 0; gpc < Number_of_values; gpc++) {
-//        for (uint32_t worker = 0; worker < Number_of_workers; worker++) {
-//            if (m_Worker[worker].has_data(gpc)) {
-//                double value = m_Worker[worker].get_data(gpc);
-//                the_area[gpc].set_value(value);
-//            }
-//        }
-//    }
     auto win = get_window();
     if (win) {
-        Gdk::Rectangle r(0, 0, get_allocation().get_width(),
-                         get_allocation().get_height());
+        Gdk::Rectangle r(0, 0, get_allocation().get_width(), get_allocation().get_height());
         win->invalidate_rect(r, false);
     }
+}
+
+void My_window::set_hovedtrykk(double data) {
+    the_area[0].set_value(data / 100.0);
+    m_Dispatcher.emit();
+}
+
+void My_window::set_bremsetrykk(double data) {
+    the_area[1].set_value(data / 100.0);
+    m_Dispatcher.emit();
+}
+
+void My_window::set_trekkraft(double data) {
+    the_area[2].set_value(data);
+    m_Dispatcher.emit();
+}
+
+void My_window::set_odometer(double data) {
+    the_area[3].set_value(data);
+    m_Dispatcher.emit();
 }

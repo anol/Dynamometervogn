@@ -27,7 +27,13 @@ public:
 
     void initialize();
 
-    void notify();
+    void set_hovedtrykk(double data);
+
+    void set_bremsetrykk(double data);
+
+    void set_trekkraft(double data);
+
+    void set_odometer(double data);
 
 protected:
     void on_button_clicked();
