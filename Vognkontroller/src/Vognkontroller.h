@@ -9,6 +9,7 @@
 
 #include "My_window.h"
 #include "My_worker.h"
+#include "My_HID_controller.h"
 
 class Vognkontroller {
     enum {
@@ -22,7 +23,9 @@ class Vognkontroller {
             {2, "/dev/ttyUSB2"},
             {3, "/dev/ttyUSB3"}
     };
-    std::thread *m_WorkerThread[Number_of_workers]{};
+    std::thread *optional_worker_thread[Number_of_workers]{};
+    My_HID_controller the_HID_controller{};
+    std::thread *optional_HID_thread{};
 
 public:
     int main(int argc, char *argv[]);
@@ -33,6 +36,8 @@ private:
     My_worker *get_worker(uint32_t index) { return (index < Number_of_workers) ? &m_Worker[index] : nullptr; };
 
     void initialize_workers();
+
+    void initialize_HID_controller();
 };
 
 

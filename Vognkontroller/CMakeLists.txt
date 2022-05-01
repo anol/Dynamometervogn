@@ -19,6 +19,10 @@ add_executable(Vognkontroller
         src/My_area.h
         src/My_worker.cpp
         src/My_worker.h
+        src/My_HID_controller.cpp
+        src/My_HID_controller.h
+        src/hidapi/hidapi.h
+        src/hidapi/hid_linux.c
         )
 
 link_directories(/usr/local/include)
@@ -34,11 +38,11 @@ target_link_libraries(Vognkontroller ${CAIRO_LIBRARIES})
 
 #if (${Platform} STREQUAL Raspberry)
 #
-#    set(MY_LIB_DIR "/usr/lib/arm-linux-gnueabihf")
-#    target_link_libraries(Vognkontroller
-#            ${MY_LIB_DIR}/libhidapi-hidraw.so.0
-#            ${MY_LIB_DIR}/libhidapi-libusb.so.0
-#            /lib/arm-linux-gnueabihf/libudev.so.1)
+    set(MY_LIB_DIR "/usr/lib/arm-linux-gnueabihf")
+    target_link_libraries(Vognkontroller
+            ${MY_LIB_DIR}/libhidapi-hidraw.so.0
+            ${MY_LIB_DIR}/libhidapi-libusb.so.0
+            /lib/arm-linux-gnueabihf/libudev.so.1)
 #
 #elseif (${Platform} STREQUAL Windows)
 #
