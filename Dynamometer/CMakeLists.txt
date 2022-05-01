@@ -11,8 +11,8 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 set(CMAKE_HAVE_THREADS_LIBRARY 1)
 
 add_executable(Dynamometer
-        src/Dynamometer.cpp
-        src/Dynamometer.h
+        src/Vognkontroller.cpp
+        src/Vognkontroller.h
         src/My_window.cpp
         src/My_window.h
         src/My_area.cpp

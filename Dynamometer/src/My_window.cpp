@@ -70,7 +70,12 @@ void My_window::set_trekkraft(double data) {
     m_Dispatcher.emit();
 }
 
-void My_window::set_odometer(double data) {
+void My_window::set_trippteller(double data) {
     the_area[3].set_value(data);
+    m_Dispatcher.emit();
+}
+
+void My_window::set_hastighet(double data) {
+    the_area[4].set_value(data);
     m_Dispatcher.emit();
 }

@@ -13,7 +13,7 @@
 
 class My_window : public Gtk::Window {
     enum {
-        Number_of_values = 4,
+        Number_of_values = 5,
     };
     My_area the_area[Number_of_values];
     Gtk::Box the_box;
@@ -33,7 +33,9 @@ public:
 
     void set_trekkraft(double data);
 
-    void set_odometer(double data);
+    void set_trippteller(double data);
+
+    void set_hastighet(double data);
 
 protected:
     void on_button_clicked();

@@ -58,11 +58,15 @@ void My_worker::read_data(int fd) {
                 the_key = '\0';
                 break;
             case '.':
-                the_buffer[the_pos++] = ',';
+                if (the_pos < Buffer_size) {
+                    the_buffer[the_pos++] = ',';
+                }
                 break;
             default:
-                if ((sym >= '0') && (sym <= '9') && (the_pos < Buffer_size)) {
-                    the_buffer[the_pos++] = sym;
+                if (the_pos < Buffer_size) {
+                    if (((sym >= '0') && (sym <= '9')) || (sym == '-')) {
+                        the_buffer[the_pos++] = sym;
+                    }
                 }
                 break;
         }

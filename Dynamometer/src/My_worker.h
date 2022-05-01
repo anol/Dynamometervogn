@@ -10,7 +10,7 @@
 #include <mutex>
 #include <stdint-gcc.h>
 
-class Dynamometer;
+class Vognkontroller;
 
 class My_worker {
     int the_index;

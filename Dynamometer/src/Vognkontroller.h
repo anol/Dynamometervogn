@@ -10,7 +10,7 @@
 #include "My_window.h"
 #include "My_worker.h"
 
-class Dynamometer {
+class Vognkontroller {
     enum {
         Number_of_workers = 4
     };

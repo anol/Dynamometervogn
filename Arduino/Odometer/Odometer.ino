@@ -37,7 +37,7 @@ void blink() {
         }
         case 120:
         case 184: {
-            trip += 0.314;
+            trip -= 0.314;
             Serial.print("d=");
             Serial.print(trip);
             Serial.println(";");
