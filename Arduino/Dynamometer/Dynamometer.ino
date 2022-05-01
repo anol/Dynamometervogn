@@ -34,10 +34,8 @@ unsigned long t = 0;
 
 void setup() {
     Serial.begin(115200);
-    delay(10);
-    Serial.println();
-    Serial.println("Starting...");
-
+    Serial.println(";DYNAMOMETER;\r\n");
+    delay(1000);
     LoadCell.begin();
     float calibrationValue; // calibration value (see example file "Calibration.ino")
     calibrationValue = 22300.0; // uncomment this if you want to set the calibration value in the sketch
@@ -54,8 +52,6 @@ void setup() {
         while (1);
     } else {
         LoadCell.setCalFactor(calibrationValue); // set calibration value (float)
-        Serial.println("Setup done;");
-        Serial.println("x=W;");
     }
 }
 

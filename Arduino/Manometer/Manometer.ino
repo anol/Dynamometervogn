@@ -4,16 +4,16 @@ const int pin_b = A4;
 
 void setup() {
     Serial.begin(115200);
-    delay(10);
-    Serial.println("Setup done;");
-    Serial.println("x=P;");
+    Serial.println(";MANOMETER;");
+    delay(1000);
 }
 
 void loop() {
     Serial.print("a=");
     Serial.print(analogRead(pin_a));
-    Serial.print(";b=");
+    Serial.println(";");
+    Serial.print("b=");
     Serial.print(analogRead(pin_b));
-    Serial.print(";\r");
+    Serial.println(";");
     delay(100);
 }
