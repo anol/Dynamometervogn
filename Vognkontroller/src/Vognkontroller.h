@@ -9,6 +9,7 @@
 
 #include "My_window.h"
 #include "My_worker.h"
+#include "My_filelogger.h"
 #include "My_HID_controller.h"
 
 class Vognkontroller {
@@ -16,6 +17,7 @@ class Vognkontroller {
         Number_of_workers = 4
     };
 
+    My_filelogger the_logger{};
     My_window *optional_window{};
     My_worker m_Worker[Number_of_workers] = {
             {0, "/dev/ttyUSB0"},

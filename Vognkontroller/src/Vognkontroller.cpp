@@ -10,6 +10,7 @@ int main(int argc, char *argv[]) {
 }
 
 int Vognkontroller::main(int argc, char *argv[]) {
+    the_logger.initialize();
     auto app = Gtk::Application::create(argc, argv, "no.åøya.dynamometer");
     optional_window = new My_window();
     if (optional_window) {
@@ -41,6 +42,7 @@ void Vognkontroller::initialize_workers() {
 }
 
 void Vognkontroller::notify(char key, double data) {
+    the_logger.logg(key, data);
     switch (key) {
         case 'a':
             data -= 100.0;

@@ -19,6 +19,8 @@ add_executable(Vognkontroller
         src/My_area.h
         src/My_worker.cpp
         src/My_worker.h
+        src/My_filelogger.cpp
+        src/My_filelogger.h
         src/My_HID_controller.cpp
         src/My_HID_controller.h
         src/hidapi/hidapi.h
