@@ -60,7 +60,9 @@ void loop() {
         float i = LoadCell.getData();
         Serial.print("c=");
         Serial.print(i);
-        Serial.print(";\r");
+        Serial.println(";");
+        delay(100);
+    } else {
+        delay(10);
     }
-    delay(10);
 }
