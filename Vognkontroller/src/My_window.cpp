@@ -7,7 +7,7 @@
 
 My_window::My_window() :
         the_box(Gtk::ORIENTATION_VERTICAL),
-        the_button("NMDF Dynamometer " __DATE__) {
+        the_button("Målevogn " __DATE__) {
     set_border_width(20);
     the_button.signal_clicked().connect(sigc::mem_fun(*this, &My_window::on_button_clicked));
     m_Dispatcher.connect(sigc::mem_fun(*this, &My_window::on_notification_from_worker_thread));
