@@ -33,7 +33,7 @@ bool My_area::on_draw(const Cairo::RefPtr <Cairo::Context> &cr) {
             sprintf(buffer, "%.2f m  ", the_value);
             break;
         case 4:
-            sprintf(buffer, "%.2f m/s", the_value);
+            sprintf(buffer, "%.2f km/t", the_value);
             break;
         default:
             sprintf(buffer, "%.2f", the_value);

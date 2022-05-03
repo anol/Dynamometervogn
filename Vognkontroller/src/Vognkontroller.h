@@ -28,6 +28,8 @@ class Vognkontroller {
     std::thread *optional_worker_thread[Number_of_workers]{};
     My_HID_controller the_HID_controller{};
     std::thread *optional_HID_thread{};
+    double the_odometer{};
+    uint64_t the_timestamp{};
 
 public:
     int main(int argc, char *argv[]);
@@ -40,6 +42,10 @@ private:
     void initialize_workers();
 
     void initialize_HID_controller();
+
+    void odometer_update(double data);
+
+    uint64_t get_elapsed();
 };
 
 

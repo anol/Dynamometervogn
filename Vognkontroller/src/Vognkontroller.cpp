@@ -2,6 +2,9 @@
 // Created by aeols on 29.04.2022.
 //
 
+#include <chrono>
+#include <cstdint>
+
 #include "Vognkontroller.h"
 
 int main(int argc, char *argv[]) {
@@ -10,6 +13,7 @@ int main(int argc, char *argv[]) {
 }
 
 int Vognkontroller::main(int argc, char *argv[]) {
+    get_elapsed();
     the_logger.initialize();
     auto app = Gtk::Application::create(argc, argv, "no.åøya.dynamometer");
     optional_window = new My_window();
@@ -47,21 +51,16 @@ void Vognkontroller::notify(char key, double data) {
         case 'a':
             data -= 100.0;
             if (optional_window)optional_window->set_hovedtrykk(data);
-            the_HID_controller.set_X(data / 100.0);
             break;
         case 'b':
             if (optional_window)optional_window->set_bremsetrykk(data);
             break;
         case 'c':
             if (optional_window) optional_window->set_trekkraft(-data);
-            the_HID_controller.set_Y(-data);
+            the_HID_controller.set_X(-data);
             break;
         case 'd':
-            if (optional_window) optional_window->set_trippteller(data);
-            the_HID_controller.set_Z(data);
-            break;
-        case 'e':
-            if (optional_window) optional_window->set_hastighet(data);
+            odometer_update(data);
             break;
         case 'x':
 //            if (m_WorkerThread[gpc] && m_Worker[gpc].has_stopped()) {
@@ -74,4 +73,24 @@ void Vognkontroller::notify(char key, double data) {
         default:
             break;
     }
+}
+
+void Vognkontroller::odometer_update(double data) {
+    auto elapsed = get_elapsed();
+    auto speed = (elapsed > 0) ? (data - the_odometer) / elapsed : 0.0;
+    the_odometer = data;
+    the_HID_controller.set_Y(speed);
+    the_HID_controller.set_Z(the_odometer);
+    if (optional_window) {
+        optional_window->set_hastighet(speed);
+        optional_window->set_trippteller(the_odometer);
+    }
+}
+
+uint64_t Vognkontroller::get_elapsed() {
+    uint64_t current = std::chrono::duration_cast<std::chrono::milliseconds>
+            (std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+    uint64_t elapsed = current - the_timestamp;
+    the_timestamp = current;
+    return elapsed;
 }
