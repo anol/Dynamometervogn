@@ -77,7 +77,7 @@ void Vognkontroller::notify(char key, double data) {
 
 void Vognkontroller::odometer_update(double data) {
     auto elapsed = get_elapsed();
-    auto speed = (elapsed > 0) ? (data - the_odometer) / elapsed : 0.0;
+    auto speed = (elapsed > 0) ? (data - the_odometer) * 3600.0 / elapsed : 0.0;
     the_odometer = data;
     the_HID_controller.set_Y(speed);
     the_HID_controller.set_Z(the_odometer);
