@@ -26,7 +26,7 @@ void Data_entry::serialize(std::ostream &out) const {
 }
 
 void Data_entry::serialize_statistics(std::ostream &out) {
-    out << "Counters:";
+    out << "Data_entry";
     for (auto &counter: the_counters) {
         out << ";" << counter;
     }
@@ -34,18 +34,25 @@ void Data_entry::serialize_statistics(std::ostream &out) {
 }
 
 bool Data_entry::finalize() {
-    if (the_previous_time > the_time) {
+    if ((the_time > 0) && (the_previous_time > the_time)) {
         the_time += 24 * 3600;
     }
-    for (auto gpc = 0; gpc < Number_of_values; gpc++) {
-        if (the_values[gpc] > 100000.0) {
-            the_values[gpc] = 0.1;
+    for (auto index = 0; index < Number_of_values; index++) {
+        if (the_values[index] > 100000.0) {
+            the_values[index] = 0.1;
         }
-        if (the_negatives[gpc] && the_values[gpc] > 0.0) {
-            the_values[gpc] = -the_values[gpc];
+        if (the_negatives[index] && the_values[index] > 0.0) {
+            the_values[index] = -the_values[index];
         }
     }
     return true;
+}
+
+void Data_entry::merge(const Data_entry &entry) {
+    for (auto index = 0; index < Number_of_values; index++) {
+        the_values[index] += entry.get_value(index);
+        the_values[index] /= 2.0;
+    }
 }
 
 void Data_entry::set_id(char sym) {

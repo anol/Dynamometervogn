@@ -13,12 +13,11 @@
 #include <unistd.h>
 #endif
 
-#include <vector>
-
 #include "Data_entry.h"
+#include "Time_series.h"
 
 class Datasporing {
-    std::vector<Data_entry> the_entries{};
+    Time_series the_time_series{};
 
 public:
     void import_entries(const char *filename);

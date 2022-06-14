@@ -32,6 +32,8 @@ public:
 
     void serialize(std::ostream &out) const;
 
+    static void serialize_statistics(std::ostream &out);
+
     void append_value(char sym);
 
     void append_time(char sym, int multi);
@@ -40,7 +42,15 @@ public:
 
     void set_id(char sym);
 
-    static void serialize_statistics(std::ostream &out);
+    char get_id() const { return the_id; };
+
+    uint32_t get_time() const { return the_time; }
+
+    double get_value(uint32_t index) const { return (index < Number_of_values) ? the_values[index] : 0.011; };
+
+    bool is_valid() const { return the_time > 0; };
+
+    void merge(const Data_entry &entry);
 };
 
 

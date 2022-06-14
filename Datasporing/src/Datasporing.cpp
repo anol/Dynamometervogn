@@ -39,17 +39,17 @@ void Datasporing::print_entries() {
 
 void Datasporing::serialize(std::ostream &out) const {
     Data_entry::serialize_statistics(out);
-    for (auto &entry: the_entries) {
-        entry.serialize(out);
-    }
+    the_time_series.serialize_statistics(out);
+    the_time_series.serialize(out);
 }
 
 void Datasporing::handle_data(const char *data) {
     Data_entry entry{};
     while (*data) {
         if (entry.scan(*data++)) {
-            the_entries.push_back(entry);
+            the_time_series.append(entry);
             entry.clear();
         }
     }
+    the_time_series.finalize();
 }
