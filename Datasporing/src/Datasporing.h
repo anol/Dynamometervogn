@@ -16,7 +16,9 @@
 class Datasporing {
 
 public:
-    int run();
+    int read(const char *filename);
+
+    int handle_data(const char *data);
 };
 
 
