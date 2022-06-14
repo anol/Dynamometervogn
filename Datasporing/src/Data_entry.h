@@ -20,6 +20,9 @@ class Data_entry {
     uint32_t the_time{};
     double the_values[Number_of_values]{};
     bool the_negatives[Number_of_values]{};
+
+private:
+    static uint32_t the_previous_time;
     static uint32_t the_counters[Number_of_values];
 
 public:
@@ -37,7 +40,7 @@ public:
 
     void set_id(char sym);
 
-    static void serialize_statistics(std::ostream &out) ;
+    static void serialize_statistics(std::ostream &out);
 };
 
 
