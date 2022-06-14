@@ -13,12 +13,24 @@
 #include <unistd.h>
 #endif
 
+#include <vector>
+
+#include "Data_entry.h"
+
 class Datasporing {
+    std::vector<Data_entry> the_entries{};
 
 public:
-    int read(const char *filename);
+    void import_entries(const char *filename);
 
-    int handle_data(const char *data);
+    void handle_data(const char *data);
+
+    void export_entries(const char *filename);
+
+    void print_entries();
+
+private:
+    void serialize(std::ostream &out) const;
 };
 
 

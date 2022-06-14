@@ -8,12 +8,18 @@
 
 int main(int argc, char *argv[]) {
     try {
+        Datasporing app{};
         if (argc > 1) {
-            Datasporing app{};
-            return app.read(argv[1]);
+            app.import_entries(argv[1]);
         } else {
             throw std::runtime_error("<> Missing file name <>");
         }
+        if (argc > 2) {
+            app.export_entries(argv[2]);
+        } else {
+            app.print_entries();
+        }
+        return 0;
     } catch (const std::runtime_error &ex) {
         std::cout << ex.what() << std::endl;
     }
