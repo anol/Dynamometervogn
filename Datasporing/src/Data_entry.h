@@ -20,6 +20,7 @@ class Data_entry {
     uint32_t the_time{};
     double the_values[Number_of_values]{};
     bool the_negatives[Number_of_values]{};
+    uint32_t the_decimales{};
 
 private:
     static uint32_t the_previous_time;

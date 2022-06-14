@@ -46,8 +46,12 @@ void Datasporing::serialize(std::ostream &out) const {
 void Datasporing::handle_data(const char *data) {
     Data_entry entry{};
     while (*data) {
-        if (entry.scan(*data++)) {
-            the_time_series.append(entry);
+        try {
+            if (entry.scan(*data++)) {
+                the_time_series.append(entry);
+                entry.clear();
+            }
+        } catch (...) {
             entry.clear();
         }
     }

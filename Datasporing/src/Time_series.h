@@ -17,7 +17,7 @@ class Time_series {
 public:
     void serialize(std::ostream &out) const;
 
-    void serialize_statistics(std::ostream &out) const ;
+    void serialize_statistics(std::ostream &out) const;
 
     void append(const Data_entry &entry);
 

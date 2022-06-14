@@ -11,6 +11,7 @@ uint32_t Data_entry::the_previous_time{};
 
 void Data_entry::clear() {
     the_id = ' ';
+    the_decimales = 0;
     if (the_previous_time < the_time) {
         the_previous_time = the_time;
     }
@@ -19,6 +20,7 @@ void Data_entry::clear() {
 
 void Data_entry::serialize(std::ostream &out) const {
     out << the_time;
+    out << ";" << the_time / 3600 << ":" << (the_time / 60) % 60 << ":" << the_time % 60;
     for (auto &value: the_values) {
         out << ";" << value;
     }
@@ -69,10 +71,17 @@ void Data_entry::append_value(char sym) {
     auto index = (the_id >= 'a') ? (the_id - 'a') : Number_of_values;
     if (index < Number_of_values) {
         if (('0' <= sym) && ('9' >= sym)) {
-            the_values[index] *= 10.0;
-            the_values[index] += (sym - '0');
+            double digit = (sym - '0');
+            if (the_decimales) {
+                the_values[index] += digit / (10 ^ the_decimales++);
+            } else {
+                the_values[index] *= 10.0;
+                the_values[index] += digit;
+            }
         } else if ('-' <= sym) {
             the_negatives[index] = true;
+        } else if ((',' == sym) || ('.' == sym)) {
+            the_decimales = 1;
         }
     }
 }
@@ -80,6 +89,10 @@ void Data_entry::append_value(char sym) {
 void Data_entry::append_time(char sym, int multi) {
     if (('0' <= sym) && ('9' >= sym) && (0 < multi)) {
         the_time += (sym - '0') * multi;
+    } else {
+        clear();
+        the_state = Pos_skip;
+        throw std::runtime_error("<> Illegal time digit '" + std::string(1, sym) + "' <>");
     }
 }
 
@@ -129,7 +142,11 @@ bool Data_entry::scan(char sym) {
             break;
         }
         case ':': {
-            the_state = Pos_id;
+            if (the_state != Pos_id) {
+                clear();
+                the_state = Pos_skip;
+                throw std::runtime_error("<> Illegal time field <>");
+            }
             break;
         }
         case '=': {
