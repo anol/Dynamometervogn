@@ -15,10 +15,10 @@ void Time_series::serialize(std::ostream &out) const {
 
 void Time_series::serialize_statistics(std::ostream &out) const {
     out << "Time_series";
-    out << ";" << the_append_cnt;
     out << ";" << the_entries.size();
     out << ";" << the_entries.front().get_time();
     out << ";" << the_entries.back().get_time();
+    out << ";" << the_append_cnt;
     out << std::endl;
 }
 

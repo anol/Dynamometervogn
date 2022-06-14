@@ -12,9 +12,6 @@ uint32_t Data_entry::the_previous_time{};
 void Data_entry::clear() {
     the_id = ' ';
     the_decimales = 0;
-    if (the_previous_time < the_time) {
-        the_previous_time = the_time;
-    }
     the_time = 0;
 }
 
@@ -36,8 +33,12 @@ void Data_entry::serialize_statistics(std::ostream &out) {
 }
 
 bool Data_entry::finalize() {
-    if ((the_time > 0) && (the_previous_time > the_time)) {
-        the_time += 24 * 3600;
+    if ((the_time > 0)) {
+        if (the_previous_time > the_time) {
+            the_time += 24 * 3600;
+        } else {
+            the_previous_time = the_time;
+        }
     }
     for (auto index = 0; index < Number_of_values; index++) {
         if (the_values[index] > 100000.0) {
@@ -154,7 +155,10 @@ bool Data_entry::scan(char sym) {
             break;
         }
         case ';': {
-            if (the_state != Pos_skip) {
+            if (the_state != Pos_val) {
+                clear();
+                entry_is_complete = true;
+            } else {
                 entry_is_complete = finalize();
             }
             the_state = Pos_hrs1;
