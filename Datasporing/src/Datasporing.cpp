@@ -38,6 +38,7 @@ void Datasporing::print_entries() {
 }
 
 void Datasporing::serialize(std::ostream &out) const {
+    Data_entry::serialize_statistics(out);
     for (auto &entry: the_entries) {
         entry.serialize(out);
     }
