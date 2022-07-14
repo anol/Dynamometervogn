@@ -58,11 +58,47 @@ int Frame_buffer::open() {
     return the_fd;
 }
 
+void Frame_buffer::close() {
+    clear();
+    if (optional_buffer) {
+        munmap(optional_buffer, 128);
+    }
+    ::close(the_fd);
+}
+
+void Frame_buffer::clear() {
+    if (optional_buffer) {
+        memset(optional_buffer, 0, 128);
+    }
+}
+
+void Frame_buffer::point(int x, int y, uint16_t color) {
+    if ((0 <= x) && (Frame_size > x) && (0 <= y) && (Frame_size > y)) {
+        optional_buffer->pixel[x][y] = color;
+    }
+}
+
+void Frame_buffer::x_line(int x, uint16_t color) {
+    if ((0 <= x) && (Frame_size > x)) {
+        for (int y = 0; y < Frame_size; y++) {
+            optional_buffer->pixel[x][y] = color;
+        }
+    }
+}
+
+void Frame_buffer::y_line(int y, uint16_t color) {
+    if ((0 <= y) && (Frame_size > y)) {
+        for (int x = 0; x < Frame_size; x++) {
+            optional_buffer->pixel[x][y] = color;
+        }
+    }
+}
+
 void Frame_buffer::render_snake(Frame_buffer::segment_t *segment_tail, int x, int y) {
     struct segment_t *seg_i;
     memset(optional_buffer, 0, 128);
     optional_buffer->pixel[x][y] = 0xF800;
-    for (seg_i = segment_tail; seg_i->next; seg_i=seg_i->next) {
+    for (seg_i = segment_tail; seg_i->next; seg_i = seg_i->next) {
         optional_buffer->pixel[seg_i->x][seg_i->y] = 0x7E0;
     }
     optional_buffer->pixel[seg_i->x][seg_i->y] = 0xFFFF;

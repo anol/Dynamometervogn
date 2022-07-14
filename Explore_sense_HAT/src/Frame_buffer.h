@@ -9,8 +9,11 @@
 
 class Frame_buffer {
 public:
+    enum {
+        Frame_size = 8
+    };
     struct fb_t {
-        uint16_t pixel[8][8];
+        uint16_t pixel[Frame_size][Frame_size];
     };
 
 private:
@@ -30,6 +33,16 @@ public:
     void render_snake(segment_t *segment_tail, int x, int y);
 
     fb_t *get_buffer() { return optional_buffer; };
+
+    void point(int x, int y, uint16_t color);
+
+    void x_line(int x, uint16_t color);
+
+    void y_line(int y, uint16_t color);
+
+    void close();
+
+    void clear();
 };
 
 

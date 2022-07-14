@@ -6,11 +6,15 @@ set(CMAKE_CXX_STANDARD 14)
 add_executable(${PROJECT_NAME}
         src/main.cpp
         src/Snake.cpp
+        src/Snake.h
         src/Frame_buffer.cpp
-#        src/RTIMULibDrive11.cpp
-        src/main.cpp src/Frame_buffer.cpp src/Frame_buffer.h src/Snake.h)
+        src/Frame_buffer.h
+        src/Target_focus.cpp
+        src/Target_focus.h
+        #        src/RTIMULibDrive11.cpp
+        )
 
-link_directories(/usr/local/include)
+include_directories(/usr/local/include)
 link_directories(/usr/local/lib)
 target_link_libraries(${PROJECT_NAME} -lRTIMULib)
 
