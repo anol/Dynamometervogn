@@ -9,7 +9,7 @@ husk:
 - Deployment, set root path, and mappings deployment path
 
 og
-- /home/pi/.config/autostart
+- /home/pi/.config/autostart/Vognkontroller.desktop
   [Desktop Entry]
   Type=Application
   Name=Vognkontroller
