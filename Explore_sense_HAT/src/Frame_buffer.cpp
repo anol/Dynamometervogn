@@ -68,7 +68,7 @@ void Frame_buffer::close() {
 
 void Frame_buffer::clear() {
     if (optional_buffer) {
-        memset(optional_buffer, 0, 128);
+        memset(optional_buffer, 1, 128);
     }
 }
 

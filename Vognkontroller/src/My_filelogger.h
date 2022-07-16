@@ -8,12 +8,13 @@
 #include <ctime>
 #include <chrono>
 #include <fstream>
+#include <mutex>
 
 class My_filelogger {
     std::fstream the_file{};
     std::time_t the_start_time{};
     std::chrono::milliseconds the_zero_time{};
-
+    std::mutex the_mutex{};
 public:
     My_filelogger() = default;
 

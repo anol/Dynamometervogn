@@ -22,12 +22,14 @@ int Target_focus::main() {
     int x = 0;
     int y = 0;
     int c = 10000;
+    uint16_t color_x = 0x07E0;
+    uint16_t color_y = 0xF800;
     while (c--) {
         x &= 0x7;
         y &= 0x7;
-        the_frame.x_line(x++, 0x07E0);
-        the_frame.y_line(y++, 0xF800);
-        ::usleep(1000000);
+        the_frame.x_line(x++, color_x);
+        the_frame.y_line(y++, color_y);
+        ::usleep(30000);
     }
     the_frame.close();
     return 0;

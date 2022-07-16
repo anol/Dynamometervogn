@@ -28,5 +28,6 @@ void My_filelogger::initialize() {
 void My_filelogger::logg(char key, double data) {
     auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch()) - the_zero_time;
+    std::lock_guard<std::mutex> guard(the_mutex);
     the_file << timestamp.count() << "," << key << "," << data << ";" << std::endl;
 }
