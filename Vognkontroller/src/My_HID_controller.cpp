@@ -16,7 +16,8 @@ My_HID_controller::My_HID_controller() {
 }
 
 void My_HID_controller::initalize(void *user, void (*func)(void *, char, double)) {
-
+    optional_user = user;
+    optional_func = func;
 }
 
 int My_HID_controller::run() {
@@ -118,8 +119,7 @@ void My_HID_controller::read_buttons(unsigned char *buf, hid_device *handle) {
         if ((res > 0)) {
             uint8_t new_buttons = 0x7Fu & buf[1];
             if ((old_buttons != new_buttons)) {
-                button_changed(old_buttons, new_buttons);
-                old_buttons = new_buttons;
+                old_buttons = button_changed(old_buttons, new_buttons);
                 write_xyz(handle, the_X, the_Y, the_Z);
             } else if (buf[1] == 0) {
                 write_xyz(handle, the_X, the_Y, the_Z);
@@ -136,21 +136,39 @@ void My_HID_controller::read_buttons(unsigned char *buf, hid_device *handle) {
     }
 }
 
-void My_HID_controller::button_changed(uint8_t old_buttons, uint8_t new_buttons) {
+uint8_t My_HID_controller::button_changed(uint8_t old_buttons, uint8_t new_buttons) {
     printf("%02X -> %02X\n", old_buttons, new_buttons);
     if (new_buttons == 0) {
         switch (old_buttons) {
             case 1:
                 the_X = 0;
+                if (optional_func) {
+                    optional_func(optional_user, 'X', 0);
+                }
                 break;
             case 2:
                 the_Y = 0;
+                if (optional_func) {
+                    optional_func(optional_user, 'Y', 0);
+                }
                 break;
             case 4:
                 the_Z = 0;
+                if (optional_func) {
+                    optional_func(optional_user, 'Z', 0);
+                }
                 break;
             default:
                 break;
         }
+    } else if (new_buttons == 1 && old_buttons == 3) {
+        if (optional_func) {
+            optional_func(optional_user, 'V', 0);
+        }
+    } else if (new_buttons == 1 && old_buttons == 5) {
+        if (optional_func) {
+            optional_func(optional_user, 'W', 0);
+        }
     }
+    return new_buttons;
 }

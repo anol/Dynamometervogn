@@ -9,6 +9,7 @@
 
 class My_area : public Gtk::DrawingArea {
     double the_value{};
+    std::string the_text{};
     uint32_t the_index{};
 
 public:
@@ -18,19 +19,21 @@ public:
 
     void initialize(uint32_t index) { the_index = index; };
 
+    void set_text(const std::string& text) { the_text = text; }
+
     void set_value(double value) { the_value = value; }
 
     double get_value() const { return the_value; }
 
 protected:
     //Override default signal handler:
-    bool on_draw(const Cairo::RefPtr <Cairo::Context> &cr) override;
+    bool on_draw(const Cairo::RefPtr<Cairo::Context> &cr) override;
 
 private:
-    void draw_rectangle(const Cairo::RefPtr <Cairo::Context> &cr, int width, int height);
+    void draw_rectangle(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height);
 
     void
-    draw_text(const char *text, const Cairo::RefPtr <Cairo::Context> &cr, int rectangle_width, int rectangle_height);
+    draw_text(const char *text, const Cairo::RefPtr<Cairo::Context> &cr, int rectangle_width, int rectangle_height);
 
 };
 

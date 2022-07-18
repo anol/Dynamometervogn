@@ -59,7 +59,7 @@ void My_worker::read_data(int fd) {
                 break;
             case '.':
                 if (the_pos < Buffer_size) {
-                    the_buffer[the_pos++] = ',';
+                    the_buffer[the_pos++] = '.';
                 }
                 break;
             default:
@@ -98,6 +98,6 @@ void My_worker::run() {
         m_has_stopped = true;
     }
     if (optional_func) {
-        optional_func(optional_user, 'x', 0.0);
+        optional_func(optional_user, '0' + the_index, 0.0);
     }
 }

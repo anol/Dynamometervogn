@@ -13,17 +13,18 @@
 
 class My_window : public Gtk::Window {
     enum {
-        Number_of_values = 5,
+        Number_of_values = 6,
     };
     My_area the_area[Number_of_values];
+    char the_flag{};
     Gtk::Box the_box;
     Gtk::Button the_button;
-    Glib::Dispatcher m_Dispatcher{};
+    Glib::Dispatcher the_dispatcher{};
 
 public:
     My_window();
 
-    virtual ~My_window();
+    ~My_window() override;
 
     void initialize();
 
@@ -36,6 +37,8 @@ public:
     void set_trippteller(double data);
 
     void set_hastighet(double data);
+
+    void set_flag(const std::string& text);
 
 protected:
     void on_button_clicked();

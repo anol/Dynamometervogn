@@ -4,13 +4,11 @@
 
 #include "My_area.h"
 
-My_area::My_area() {
-}
+My_area::My_area() = default;
 
-My_area::~My_area() {
-}
+My_area::~My_area() = default;
 
-bool My_area::on_draw(const Cairo::RefPtr <Cairo::Context> &cr) {
+bool My_area::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
     Gtk::Allocation allocation = get_allocation();
     const int width = allocation.get_width();
     const int height = allocation.get_height();
@@ -18,7 +16,10 @@ bool My_area::on_draw(const Cairo::RefPtr <Cairo::Context> &cr) {
     cr->set_source_rgb(0.0, 0.0, 0.0);
     draw_rectangle(cr, width, height);
     // and some white text
-    char buffer[16];
+    enum {
+        Buffer_size = 16
+    };
+    char buffer[Buffer_size];
     switch (the_index) {
         case 0:
             sprintf(buffer, "%.2f bar", the_value);
@@ -36,7 +37,7 @@ bool My_area::on_draw(const Cairo::RefPtr <Cairo::Context> &cr) {
             sprintf(buffer, "%.2f km/t", the_value);
             break;
         default:
-            sprintf(buffer, "%.2f", the_value);
+            strncpy(buffer, the_text.c_str(), Buffer_size);
             break;
     }
     cr->set_source_rgb(1.0, 1.0, 1.0);
@@ -44,13 +45,13 @@ bool My_area::on_draw(const Cairo::RefPtr <Cairo::Context> &cr) {
     return true;
 }
 
-void My_area::draw_rectangle(const Cairo::RefPtr <Cairo::Context> &cr,
+void My_area::draw_rectangle(const Cairo::RefPtr<Cairo::Context> &cr,
                              int width, int height) {
     cr->rectangle(0, 0, width, height);
     cr->fill();
 }
 
-void My_area::draw_text(const char *text, const Cairo::RefPtr <Cairo::Context> &cr,
+void My_area::draw_text(const char *text, const Cairo::RefPtr<Cairo::Context> &cr,
                         int rectangle_width, int rectangle_height) {
     // http://developer.gnome.org/pangomm/unstable/classPango_1_1FontDescription.html
     Pango::FontDescription font;

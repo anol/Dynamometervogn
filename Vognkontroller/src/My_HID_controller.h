@@ -36,7 +36,7 @@ private:
 
     void read_buttons(unsigned char *buf, hid_device *handle);
 
-    void button_changed(uint8_t old_buttons, uint8_t new_buttons);
+    uint8_t button_changed(uint8_t old_buttons, uint8_t new_buttons);
 
     void write_xyz(hid_device *handle, int32_t x, int32_t y, int32_t z);
 

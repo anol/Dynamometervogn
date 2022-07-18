@@ -10,11 +10,10 @@ My_window::My_window() :
         the_button("Målevogn " __DATE__) {
     set_border_width(20);
     the_button.signal_clicked().connect(sigc::mem_fun(*this, &My_window::on_button_clicked));
-    m_Dispatcher.connect(sigc::mem_fun(*this, &My_window::on_notification_from_worker_thread));
+    the_dispatcher.connect(sigc::mem_fun(*this, &My_window::on_notification_from_worker_thread));
 }
 
-My_window::~My_window() {
-}
+My_window::~My_window() = default;
 
 void My_window::initialize() {
     move(0, 0);
@@ -57,25 +56,30 @@ void My_window::update_widgets() {
 
 void My_window::set_hovedtrykk(double data) {
     the_area[0].set_value(data / 100.0);
-    m_Dispatcher.emit();
+    the_dispatcher.emit();
 }
 
 void My_window::set_bremsetrykk(double data) {
     the_area[1].set_value(data / 100.0);
-    m_Dispatcher.emit();
+    the_dispatcher.emit();
 }
 
 void My_window::set_trekkraft(double data) {
     the_area[2].set_value(data);
-    m_Dispatcher.emit();
+    the_dispatcher.emit();
 }
 
 void My_window::set_trippteller(double data) {
     the_area[3].set_value(data);
-    m_Dispatcher.emit();
+    the_dispatcher.emit();
 }
 
 void My_window::set_hastighet(double data) {
     the_area[4].set_value(data);
-    m_Dispatcher.emit();
+    the_dispatcher.emit();
+}
+
+void My_window::set_flag(const std::string& text) {
+    the_area[5].set_text(text);
+    the_dispatcher.emit();
 }

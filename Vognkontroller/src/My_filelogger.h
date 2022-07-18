@@ -22,7 +22,7 @@ public:
 
     void initialize();
 
-    void logg(char key, double data);
+    void logg(char key, int data);
 };
 
 

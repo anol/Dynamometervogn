@@ -45,7 +45,7 @@ void Vognkontroller::initialize_workers() {
     }
 }
 
-void Vognkontroller::notify(char key, double data) {
+void Vognkontroller::notify(char key, int data) {
     the_logger.logg(key, data);
     switch (key) {
         case 'a':
@@ -62,27 +62,31 @@ void Vognkontroller::notify(char key, double data) {
         case 'd':
             odometer_update(data);
             break;
-        case 'x':
-//            if (m_WorkerThread[gpc] && m_Worker[gpc].has_stopped()) {
-//                if (m_WorkerThread[gpc]->joinable())
-//                    m_WorkerThread[gpc]->join();
-//                delete m_WorkerThread[gpc];
-//                m_WorkerThread[gpc] = nullptr;
-//            }
+        case 'X':
+            if (optional_window) optional_window->set_flag("Way-point X");
+            break;
+        case 'Y':
+            if (optional_window) optional_window->set_flag("Way-point Y");
+            break;
+        case 'Z':
+            if (optional_window) optional_window->set_flag("Trip count 0");
+            the_odometer = 0.0;
             break;
         default:
+            if (optional_window) optional_window->set_flag("");
             break;
     }
 }
 
-void Vognkontroller::odometer_update(double data) {
+void Vognkontroller::odometer_update(int cycles) {
+    constexpr double Hjulomkrets = 0.314;
+    the_odometer += Hjulomkrets;
     auto elapsed = get_elapsed();
-    auto speed = (elapsed > 0) ? (data - the_odometer) * 3600.0 / elapsed : 0.0;
-    the_odometer = data;
-    the_HID_controller.set_Y(speed);
+    the_speed = (elapsed > 0) ? Hjulomkrets * 3600.0 / elapsed : 0.0;
+    the_HID_controller.set_Y(the_speed);
     the_HID_controller.set_Z(the_odometer);
     if (optional_window) {
-        optional_window->set_hastighet(speed);
+        optional_window->set_hastighet(the_speed);
         optional_window->set_trippteller(the_odometer);
     }
 }
