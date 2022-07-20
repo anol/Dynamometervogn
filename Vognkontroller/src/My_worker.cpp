@@ -12,7 +12,7 @@ My_worker::My_worker(int index, const char *name) :
         m_shall_stop(false),
         m_has_stopped(false) {}
 
-void My_worker::initalize(void *user, void (*func)(void *user, char key, double data)) {
+void My_worker::initalize(void *user, void (*func)(void *user, char key, int data)) {
     optional_user = user;
     optional_func = func;
 }
@@ -47,28 +47,23 @@ void My_worker::read_data(int fd) {
             case '=':
                 the_pos = 0;
                 break;
-            case 'a':
-            case 'b':
-            case 'c':
-            case 'd':
-                the_key = sym;
-                break;
             case ';':
                 update_data();
                 the_key = '\0';
                 break;
             case '.':
-                if (the_pos < Buffer_size) {
-                    the_buffer[the_pos++] = '.';
-                }
+            case ',':
                 break;
-            default:
+            default: {
                 if (the_pos < Buffer_size) {
                     if (((sym >= '0') && (sym <= '9')) || (sym == '-')) {
                         the_buffer[the_pos++] = sym;
+                    } else if ('\0' == the_key) {
+                        the_key = sym;
                     }
                 }
                 break;
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ class My_worker {
     int the_pos{};
     void *optional_user{};
 
-    void (*optional_func)(void *user, char key, double data){};
+    void (*optional_func)(void *user, char key, int data){};
 
 public:
     My_worker(int index, const char *name);
@@ -35,7 +35,7 @@ public:
 
     bool has_stopped() const;
 
-    void initalize(void *user, void (*func)(void *user, char key, double data));
+    void initalize(void *user, void (*func)(void *user, char key, int data));
 
 private:
     void update_data();

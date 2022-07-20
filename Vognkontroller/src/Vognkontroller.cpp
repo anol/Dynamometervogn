@@ -37,7 +37,7 @@ void Vognkontroller::initialize_HID_controller() {
 void Vognkontroller::initialize_workers() {
     for (uint32_t gpc = 0; gpc < Number_of_workers; gpc++) {
         if (!optional_worker_thread[gpc]) {
-            m_Worker[gpc].initalize(this, [](void *user, char key, double data) {
+            m_Worker[gpc].initalize(this, [](void *user, char key, int data) {
                 if (user) ((Vognkontroller *) user)->notify(key, data);
             });
             optional_worker_thread[gpc] = new std::thread(&My_worker::run, &m_Worker[gpc]);
