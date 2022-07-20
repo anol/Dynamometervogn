@@ -23,6 +23,8 @@ public:
     void initialize();
 
     void logg(char key, int data);
+
+    void logg(char key, const std::string &data);
 };
 
 

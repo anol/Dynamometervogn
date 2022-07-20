@@ -59,7 +59,8 @@ void Vognkontroller::notify(char key, int data) {
             if (optional_window) optional_window->set_trekkraft(-data);
             the_HID_controller.set_X(-data);
             break;
-        case 'd':
+        case 'F':
+        case 'B':
             odometer_update(data);
             break;
         case 'X':

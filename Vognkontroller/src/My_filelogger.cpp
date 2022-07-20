@@ -22,10 +22,17 @@ void My_filelogger::initialize() {
     the_file << "time(ms),key,data;" << std::endl;
     the_zero_time = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch());
-    logg('X', 0.0);
+    logg('V', "Vognkontroller");
 }
 
 void My_filelogger::logg(char key, int data) {
+    auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch()) - the_zero_time;
+    std::lock_guard<std::mutex> guard(the_mutex);
+    the_file << timestamp.count() << "," << key << "," << std::to_string(data) << ";" << std::endl;
+}
+
+void My_filelogger::logg(char key, const std::string &data) {
     auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch()) - the_zero_time;
     std::lock_guard<std::mutex> guard(the_mutex);
