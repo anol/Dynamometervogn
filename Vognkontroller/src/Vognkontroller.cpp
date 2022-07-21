@@ -18,7 +18,9 @@ int Vognkontroller::main(int argc, char *argv[]) {
     auto app = Gtk::Application::create(argc, argv, "no.åøya.dynamometer");
     optional_window = new My_window();
     if (optional_window) {
-        optional_window->initialize();
+        optional_window->initialize(this, [](void *user, char key, int data) {
+            if (user) ((Vognkontroller *) user)->notify(key, data);
+        });
         initialize_workers();
         initialize_HID_controller();
         return app->run(*optional_window);
@@ -28,7 +30,7 @@ int Vognkontroller::main(int argc, char *argv[]) {
 }
 
 void Vognkontroller::initialize_HID_controller() {
-    the_HID_controller.initalize(this, [](void *user, char key, double data) {
+    the_HID_controller.initalize(this, [](void *user, char key, int data) {
         if (user) ((Vognkontroller *) user)->notify(key, data);
     });
     optional_HID_thread = new std::thread(&My_HID_controller::run, &the_HID_controller);
@@ -48,28 +50,28 @@ void Vognkontroller::initialize_workers() {
 void Vognkontroller::notify(char key, int data) {
     the_logger.logg(key, data);
     switch (key) {
-        case 'a':
+        case My_definitions::Manometer_hovedtrykk:
             data -= 100.0;
             if (optional_window)optional_window->set_hovedtrykk(data);
             break;
-        case 'b':
+        case My_definitions::Manometer_bremsetrykk:
             if (optional_window)optional_window->set_bremsetrykk(data);
             break;
-        case 'c':
+        case My_definitions::Dynamometer_trekkraft:
             if (optional_window) optional_window->set_trekkraft(-data);
             the_HID_controller.set_X(-data);
             break;
-        case 'F':
-        case 'B':
+        case My_definitions::Odometer_fremover:
+        case My_definitions::Odometer_bakover:
             odometer_update(data);
             break;
-        case 'X':
+        case My_definitions::Button_X:
             if (optional_window) optional_window->set_flag("Way-point X");
             break;
-        case 'Y':
+        case My_definitions::Button_Y:
             if (optional_window) optional_window->set_flag("Way-point Y");
             break;
-        case 'Z':
+        case My_definitions::Button_Z:
             if (optional_window) optional_window->set_flag("Trip count 0");
             the_odometer = 0.0;
             break;
@@ -82,8 +84,10 @@ void Vognkontroller::notify(char key, int data) {
 void Vognkontroller::odometer_update(int cycles) {
     constexpr double Hjulomkrets = 0.314;
     the_odometer += Hjulomkrets;
+    the_logger.logg(My_definitions::Odometer_key, the_speed);
     auto elapsed = get_elapsed();
     the_speed = (elapsed > 0) ? Hjulomkrets * 3600.0 / elapsed : 0.0;
+    the_logger.logg(My_definitions::Speedometer, the_speed);
     the_HID_controller.set_Y(the_speed);
     the_HID_controller.set_Z(the_odometer);
     if (optional_window) {

@@ -16,12 +16,12 @@ class My_HID_controller {
 
     void *optional_user{};
 
-    void (*optional_func)(void *user, char key, double data){};
+    void (*optional_func)(void *user, char key, int data){};
 
 public:
     My_HID_controller();
 
-    void initalize(void *user, void (*func)(void *user, char key, double data));
+    void initalize(void *user, void (*func)(void *user, char key, int data));
 
     int run();
 

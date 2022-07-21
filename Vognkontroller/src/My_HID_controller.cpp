@@ -10,12 +10,13 @@
 
 
 #include "My_HID_controller.h"
+#include "My_definitions.h"
 
 My_HID_controller::My_HID_controller() {
 
 }
 
-void My_HID_controller::initalize(void *user, void (*func)(void *, char, double)) {
+void My_HID_controller::initalize(void *user, void (*func)(void *, char, int)) {
     optional_user = user;
     optional_func = func;
 }
@@ -143,19 +144,19 @@ uint8_t My_HID_controller::button_changed(uint8_t old_buttons, uint8_t new_butto
             case 1:
                 the_X = 0;
                 if (optional_func) {
-                    optional_func(optional_user, 'X', 0);
+                    optional_func(optional_user, My_definitions::Button_X, 0);
                 }
                 break;
             case 2:
                 the_Y = 0;
                 if (optional_func) {
-                    optional_func(optional_user, 'Y', 0);
+                    optional_func(optional_user, My_definitions::Button_Y, 0);
                 }
                 break;
             case 4:
                 the_Z = 0;
                 if (optional_func) {
-                    optional_func(optional_user, 'Z', 0);
+                    optional_func(optional_user, My_definitions::Button_Z, 0);
                 }
                 break;
             default:
@@ -163,11 +164,11 @@ uint8_t My_HID_controller::button_changed(uint8_t old_buttons, uint8_t new_butto
         }
     } else if (new_buttons == 1 && old_buttons == 3) {
         if (optional_func) {
-            optional_func(optional_user, 'V', 0);
+            optional_func(optional_user, My_definitions::Button_XY, 0);
         }
     } else if (new_buttons == 1 && old_buttons == 5) {
         if (optional_func) {
-            optional_func(optional_user, 'W', 0);
+            optional_func(optional_user, My_definitions::Button_XZ, 0);
         }
     }
     return new_buttons;

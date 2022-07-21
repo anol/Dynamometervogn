@@ -6,6 +6,7 @@
 #include <iomanip>
 
 #include "My_filelogger.h"
+#include "My_definitions.h"
 
 My_filelogger::~My_filelogger() {
     if (the_file.is_open()) {
@@ -22,7 +23,7 @@ void My_filelogger::initialize() {
     the_file << "time(ms),key,data;" << std::endl;
     the_zero_time = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch());
-    logg('V', "Vognkontroller");
+    logg(My_definitions::Filelogger_key, filename);
 }
 
 void My_filelogger::logg(char key, int data) {

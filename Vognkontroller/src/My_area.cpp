@@ -22,22 +22,22 @@ bool My_area::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
     };
     char buffer[Buffer_size];
     switch (the_index) {
-        case My_window::Hovedtrykk:
+        case My_definitions::Hovedtrykk:
             sprintf(buffer, "%.2f bar", the_value);
             break;
-        case My_window::Bremsetrykk:
+        case My_definitions::Bremsetrykk:
             sprintf(buffer, "%.2f bar", the_value);
             break;
-        case My_window::Trekkraft:
+        case My_definitions::Trekkraft:
             sprintf(buffer, "%.2f kg ", the_value);
             break;
-        case My_window::Trippteller:
+        case My_definitions::Trippteller:
             sprintf(buffer, "%.2f m  ", the_value);
             break;
-        case My_window::Hastighet:
+        case My_definitions::Hastighet:
             sprintf(buffer, "%.2f km/t", the_value);
             break;
-        case My_window::Omdreininger:
+        case My_definitions::Omdreininger:
             sprintf(buffer, "%.2f cyc", the_value);
             break;
         default:

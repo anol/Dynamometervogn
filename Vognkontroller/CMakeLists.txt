@@ -25,7 +25,7 @@ add_executable(Vognkontroller
         src/My_HID_controller.h
         src/hidapi/hidapi.h
         src/hidapi/hid_linux.c
-        )
+        src/My_definitions.h)
 
 link_directories(/usr/local/include)
 link_directories(/usr/local/lib)
