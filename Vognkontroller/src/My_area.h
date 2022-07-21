@@ -19,7 +19,12 @@ public:
 
     void initialize(uint32_t index) { the_index = index; };
 
-    void set_text(const std::string& text) { the_text = text; }
+    void clear() {
+        the_text.clear();
+        the_value = 0.0;
+    }
+
+    void set_text(const std::string &text) { the_text = text; }
 
     void set_value(double value) { the_value = value; }
 

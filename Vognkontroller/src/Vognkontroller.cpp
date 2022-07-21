@@ -87,6 +87,7 @@ void Vognkontroller::odometer_update(int cycles) {
     the_HID_controller.set_Y(the_speed);
     the_HID_controller.set_Z(the_odometer);
     if (optional_window) {
+        optional_window->set_omdreininger(cycles);
         optional_window->set_hastighet(the_speed);
         optional_window->set_trippteller(the_odometer);
     }

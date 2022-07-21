@@ -12,9 +12,19 @@
 #include "My_area.h"
 
 class My_window : public Gtk::Window {
+public:
     enum {
-        Number_of_values = 6,
+        Hovedtrykk,
+        Bremsetrykk,
+        Trekkraft,
+        Trippteller,
+        Hastighet,
+        Omdreininger,
+        Flaggtekst,
+        Number_of_values
     };
+
+private:
     My_area the_area[Number_of_values];
     char the_flag{};
     Gtk::Box the_box;
@@ -37,6 +47,8 @@ public:
     void set_trippteller(double data);
 
     void set_hastighet(double data);
+
+    void set_omdreininger(double data);
 
     void set_flag(const std::string& text);
 

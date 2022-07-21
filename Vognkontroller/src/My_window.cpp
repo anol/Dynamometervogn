@@ -32,14 +32,16 @@ void My_window::initialize() {
 }
 
 void My_window::on_button_clicked() {
-    the_area[1].set_value(the_area[1].get_value() + 1.1);
+    for (auto &area: the_area) {
+        area.clear();
+    }
     auto win = get_window();
     if (win) {
         Gdk::Rectangle r(0, 0, get_allocation().get_width(),
                          get_allocation().get_height());
         win->invalidate_rect(r, false);
     }
-    std::cout << "Hello World" << std::endl;
+    std::cout << "All cleared" << std::endl;
 }
 
 void My_window::on_notification_from_worker_thread() {
@@ -55,31 +57,36 @@ void My_window::update_widgets() {
 }
 
 void My_window::set_hovedtrykk(double data) {
-    the_area[0].set_value(data / 100.0);
+    the_area[Hovedtrykk].set_value(data / 100.0);
     the_dispatcher.emit();
 }
 
 void My_window::set_bremsetrykk(double data) {
-    the_area[1].set_value(data / 100.0);
+    the_area[Bremsetrykk].set_value(data / 100.0);
     the_dispatcher.emit();
 }
 
 void My_window::set_trekkraft(double data) {
-    the_area[2].set_value(data);
+    the_area[Trekkraft].set_value(data);
     the_dispatcher.emit();
 }
 
 void My_window::set_trippteller(double data) {
-    the_area[3].set_value(data);
+    the_area[Trippteller].set_value(data);
     the_dispatcher.emit();
 }
 
 void My_window::set_hastighet(double data) {
-    the_area[4].set_value(data);
+    the_area[Hastighet].set_value(data);
     the_dispatcher.emit();
 }
 
-void My_window::set_flag(const std::string& text) {
-    the_area[5].set_text(text);
+void My_window::set_omdreininger(double data) {
+    the_area[Omdreininger].set_value(data);
+    the_dispatcher.emit();
+}
+
+void My_window::set_flag(const std::string &text) {
+    the_area[Flaggtekst].set_text(text);
     the_dispatcher.emit();
 }
