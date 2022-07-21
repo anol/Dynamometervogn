@@ -20,7 +20,7 @@ void My_window::initialize() {
     add(the_box);
     for (uint32_t index = 0; index < Number_of_values; index++) {
         the_area[index].initialize(index);
-        the_area[index].set_size_request(400, 100);
+        the_area[index].set_size_request(400, 50);
         the_box.pack_start(the_area[index]);
     }
     the_box.pack_start(the_button);
