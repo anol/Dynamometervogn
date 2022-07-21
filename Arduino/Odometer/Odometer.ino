@@ -26,6 +26,7 @@ void loop() {
     my_command = Serial.readStringUntil(';');
     if(my_command != NULL){
         Serial.println("O=ODOMETER;");
+        my_command = NULL;
     }
     toggle_LED = !toggle_LED;
     digitalWrite(pin_LED, toggle_LED);
@@ -53,9 +54,9 @@ void blink() {
             break;
         }
         default: {
-            Serial.print("o=");
-            Serial.print(state, BIN);
-            Serial.println(";");
+//            Serial.print("o=");
+//            Serial.print(state, BIN);
+//            Serial.println(";");
             break;
         }
     }
