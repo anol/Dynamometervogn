@@ -31,8 +31,17 @@ void My_worker::update_data() {
     std::lock_guard<std::mutex> lock(m_Mutex);
     the_buffer[the_pos] = 0;
     try {
-        auto data = std::stod(the_buffer);
+        auto data = std::stoi(the_buffer);
         if (optional_func) {
+            optional_func(optional_user, the_key, data);
+        }
+    }
+    catch (const std::invalid_argument &ia) {
+        if (optional_func) {
+            int data = the_buffer[0] << 24;
+            data |= the_buffer[1] << 16;
+            data |= the_buffer[2] << 8;
+            data |= the_buffer[3];
             optional_func(optional_user, the_key, data);
         }
     }
@@ -58,7 +67,7 @@ void My_worker::read_data(int fd) {
                 if (the_pos < Buffer_size) {
                     if (((sym >= '0') && (sym <= '9')) || (sym == '-')) {
                         the_buffer[the_pos++] = sym;
-                    } else if ('\0' == the_key) {
+                    } else if (('\0' == the_key) && (' ' < sym)) {
                         the_key = sym;
                     }
                 }
@@ -93,6 +102,6 @@ void My_worker::run() {
         m_has_stopped = true;
     }
     if (optional_func) {
-        optional_func(optional_user, '0' + the_index, 0.0);
+        optional_func(optional_user, '0' + the_index, the_index);
     }
 }
